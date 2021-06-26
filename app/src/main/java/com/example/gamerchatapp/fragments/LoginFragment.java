@@ -4,11 +4,17 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.gamerchatapp.R;
+import com.example.gamerchatapp.activities.MainActivity;
+import com.example.gamerchatapp.dm.Body;
+import com.example.gamerchatapp.dm.Header;
+import com.example.gamerchatapp.dm.Request;
+import com.example.gamerchatapp.dm.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +67,40 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        view.findViewById(R.id.Sign_in_button).setOnClickListener(MainActivity::signIn);
+        return view;
+    }
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("result", "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("result", "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("result", "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("result", "onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("result", "onDestroy");
     }
 }
