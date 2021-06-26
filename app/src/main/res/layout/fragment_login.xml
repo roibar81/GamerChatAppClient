@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".fragments.LoginFragment">
 
     <LinearLayout
@@ -59,10 +61,11 @@
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/userNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+<<<<<<< HEAD
                 android:text="TextView" />
 
             <Button
@@ -71,6 +74,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Button" />
+=======
+                android:text="insert user name" />
+>>>>>>> 3d4db930cc55b2f26cef3e6300e99119fae9eaf0
         </LinearLayout>
 
         <LinearLayout
@@ -91,7 +97,7 @@
                 android:textSize="24sp" />
 
             <EditText
-                android:id="@+id/editTextTextPassword"
+                android:id="@+id/passwordText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -105,24 +111,25 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/Sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:onClick="signIn"
+                android:text="Sign in" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/register_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="register" />
         </LinearLayout>
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/forgot_password_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="forgot password?" />
     </LinearLayout>
 </FrameLayout>
