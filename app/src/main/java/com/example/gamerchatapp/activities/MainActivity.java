@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Response response) {
             super.onPostExecute(response);
-            loadSetFragment();
+            loadSetFragment(response.getHeader().getAction());
         }
 
     }
@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground().execute(request);
     }
 
-    public void loadSetFragment() {
+    public void loadSetFragment(String action) {
         fragmentTransaction = fragmentManager.beginTransaction();
         FrameLayout frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
         frameLayouts.setVisibility(View.VISIBLE);
         MainFragment mainFragment = new MainFragment();
-        if(response.getBody().getValid()) {
+        if(action.equals("sign_in success")) {
             FrameLayout frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
             frameLayouts2.setVisibility(View.GONE);
             fragmentTransaction.add(R.id.main_fragment, mainFragment);
