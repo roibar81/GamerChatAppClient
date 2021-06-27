@@ -50,7 +50,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/userNameTextView"
+                android:id="@+id/emailTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -61,12 +61,10 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/usernameEditText"
+                android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-<<<<<<< HEAD
-<<<<<<< HEAD
                 android:text="TextView" />
 
             <Button
@@ -75,16 +73,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Button" />
-=======
-                android:text="insert user name" />
->>>>>>> 3d4db930cc55b2f26cef3e6300e99119fae9eaf0
-=======
+
                 android:ems="10"
                 android:gravity="center"
                 android:inputType="textPersonName"
                 android:textSize="24sp" />
 
->>>>>>> fecc40360dc94cac6772459e97d0a5c4218a1b91
         </LinearLayout>
 
         <LinearLayout
@@ -135,7 +129,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/forgot_password_button"
+            android:id="@+id/Verify_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="forgot password?" />

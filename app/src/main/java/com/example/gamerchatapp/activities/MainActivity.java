@@ -1,18 +1,13 @@
 package com.example.gamerchatapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.example.gamerchatapp.fragments.MainFragment;
@@ -24,16 +19,12 @@ import com.example.gamerchatapp.dm.Request;
 import com.example.gamerchatapp.dm.Response;
 import com.example.gamerchatapp.dm.User;
 import com.example.gamerchatapp.fragments.LoginFragment;
-import com.google.gson.GsonBuilder;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -91,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void signIn(View view) {
-        String userName = view.findViewById(R.id.usernameEditText).toString();
+        String userName = view.findViewById(R.id.emailEditText).toString();
         String password = view.findViewById(R.id.passwordText).toString();
         User user = new User(userName, password);
         Header header = new Header("sign_in");
