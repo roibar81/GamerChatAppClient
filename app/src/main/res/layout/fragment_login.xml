@@ -62,14 +62,7 @@
                 android:id="@+id/userNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" /><![CDATA[
-
-            android:ems="10"
-                android:gravity="center"
-                android:inputType="textPersonName"
-                android:textSize="24sp" />
-
-        ]]>
+                android:layout_weight="1" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,7 +87,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:ems="10"
                 android:inputType="textPassword"
                 android:textSize="36sp" />
         </LinearLayout>

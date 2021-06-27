@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import com.example.gamerchatapp.fragments.MainFragment;
 import com.google.gson.Gson;
@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private String resStr;
     private Response response;
     private DoingBackground doingBackground;
-
+    private EditText nameText;
+    private EditText passText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +83,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
-        String userName = view.findViewById(R.id.userNameTextView).toString();
-        String password = view.findViewById(R.id.passwordText).toString();
+        nameText = (EditText) findViewById(R.id.userNameEditText);
+        passText = (EditText) findViewById(R.id.passwordText);
+        String userName = nameText.getText().toString();
+        String password = passText.getText().toString();
         User user = new User(userName, password);
         Header header = new Header("sign_in");
         Body body = new Body();
