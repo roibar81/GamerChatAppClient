@@ -6,15 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
-
 import com.example.gamerchatapp.fragments.MainFragment;
 import com.google.gson.Gson;
 import com.example.gamerchatapp.R;
@@ -25,7 +23,6 @@ import com.example.gamerchatapp.dm.Response;
 import com.example.gamerchatapp.dm.User;
 import com.example.gamerchatapp.fragments.LoginFragment;
 import com.google.gson.GsonBuilder;
-
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,11 +34,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static FragmentManager fragmentManager;
-    private static FragmentTransaction fragmentTransaction;
-    private static String reqStr;
-    private static String resStr;
-    private static Response response;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+    private String reqStr;
+    private String resStr;
+    private Response response;
+    private DoingBackground doingBackground;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         LoginFragment loginFragment = new LoginFragment();
         fragmentTransaction.add(R.id.fragment_login, loginFragment);
         fragmentTransaction.commit();
-        new DoingBackground();
+        doingBackground = new DoingBackground();
     }
 
     private class DoingBackground extends AsyncTask<Request, Void, Response> {
@@ -85,12 +84,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Response response) {
             super.onPostExecute(response);
-            loadSetFragment(findViewById(android.R.id.content).getRootView());
+            loadSetFragment();
         }
 
     }
 
-    public static void signIn(View view) {
+    public void signIn(View view) {
         String userName = view.findViewById(R.id.usernameEditText).toString();
         String password = view.findViewById(R.id.passwordText).toString();
         User user = new User(userName, password);
@@ -98,16 +97,16 @@ public class MainActivity extends AppCompatActivity {
         Body body = new Body();
         body.getUserList().add(user);
         Request request = new Request(header, body);
-        //new DoingBackground().execute(request);
+        new DoingBackground().execute(request);
     }
 
-    public void loadSetFragment(View view) {
+    public void loadSetFragment() {
         fragmentTransaction = fragmentManager.beginTransaction();
-        FrameLayout frameLayouts = (FrameLayout) view.findViewById(R.id.main_fragment);;
+        FrameLayout frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
         frameLayouts.setVisibility(View.VISIBLE);
         MainFragment mainFragment = new MainFragment();
         if(response.getBody().getValid()) {
-            FrameLayout frameLayouts2 = (FrameLayout) view.findViewById(R.id.fragment_login);
+            FrameLayout frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
             frameLayouts2.setVisibility(View.GONE);
             fragmentTransaction.add(R.id.main_fragment, mainFragment);
         }
