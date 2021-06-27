@@ -7,16 +7,28 @@ public class Body {
     private ArrayList<User> userList;
     private ArrayList<Game> gameList;
     private String pattern;
+    private boolean valid;
 
     public Body() {
         this.userList = new ArrayList<>();
         this.gameList = new ArrayList<>();
+        this.pattern = "";
+        this.valid = false;
     }
 
     public Body(String pattern) {
         this.pattern = pattern;
         this.userList = new ArrayList<>();
         this.gameList = new ArrayList<>();
+        this.valid = false;
+    }
+
+    public boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     public String getPattern() {

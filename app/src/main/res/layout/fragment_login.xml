@@ -49,22 +49,23 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextTextPersonName4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ems="10"
-                android:gravity="center"
-                android:inputType="textPersonName"
-                android:text="user name"
-                android:textSize="24sp" />
-
             <TextView
                 android:id="@+id/userNameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center"
+                android:text="user name"
+                android:textColor="#100F0F"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/usernameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+<<<<<<< HEAD
 <<<<<<< HEAD
                 android:text="TextView" />
 
@@ -77,6 +78,13 @@
 =======
                 android:text="insert user name" />
 >>>>>>> 3d4db930cc55b2f26cef3e6300e99119fae9eaf0
+=======
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
+
+>>>>>>> fecc40360dc94cac6772459e97d0a5c4218a1b91
         </LinearLayout>
 
         <LinearLayout
@@ -85,16 +93,16 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextTextPersonName5"
+            <TextView
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:ems="10"
                 android:gravity="center"
-                android:inputType="textPersonName"
                 android:text="password"
-                android:textSize="24sp" />
+                android:textColor="#0B0B0B"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/passwordText"
@@ -102,7 +110,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textSize="36sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,7 +124,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="signIn"
                 android:text="Sign in" />
 
             <Button
