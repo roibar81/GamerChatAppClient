@@ -49,23 +49,27 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/userNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="user name"
+                android:textColor="#100F0F"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
             <EditText
-                android:id="@+id/editTextTextPersonName4"
+                android:id="@+id/usernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="center"
                 android:inputType="textPersonName"
-                android:text="user name"
                 android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/userNameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="insert user name" />
         </LinearLayout>
 
         <LinearLayout
@@ -74,16 +78,16 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextTextPersonName5"
+            <TextView
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:ems="10"
                 android:gravity="center"
-                android:inputType="textPersonName"
                 android:text="password"
-                android:textSize="24sp" />
+                android:textColor="#0B0B0B"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/passwordText"
@@ -91,7 +95,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textSize="36sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -104,7 +109,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="signIn"
                 android:text="Sign in" />
 
             <Button

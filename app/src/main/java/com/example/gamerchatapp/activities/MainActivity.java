@@ -1,13 +1,21 @@
 package com.example.gamerchatapp.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+
+import com.example.gamerchatapp.fragments.MainFragment;
 import com.google.gson.Gson;
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.dm.Body;
@@ -18,17 +26,22 @@ import com.example.gamerchatapp.dm.User;
 import com.example.gamerchatapp.fragments.LoginFragment;
 import com.google.gson.GsonBuilder;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
+    private static FragmentManager fragmentManager;
+    private static FragmentTransaction fragmentTransaction;
     private static String reqStr;
+    private static String resStr;
+    private static Response response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground();
     }
 
-    private static class DoingBackground extends AsyncTask<Request, Void, Response> {
+    private class DoingBackground extends AsyncTask<Request, Void, Response> {
 
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.100.102.4 ", 12345);
+                Socket socket = new Socket("10.0.0.4 ", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -56,32 +69,53 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("to server", reqStr);
                 writer.writeObject(reqStr);
 
-            }catch(ConnectException e) {
+
+                resStr = reader.readObject().toString();
+                response = readResponse(resStr);
+
+            }catch(ConnectException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             } catch(IOException e) {
                 System.out.println(e.getMessage());
             }
-            return null;
+            return response;
         }
 
 
         @Override
         protected void onPostExecute(Response response) {
             super.onPostExecute(response);
-
+            loadSetFragment(findViewById(android.R.id.content).getRootView());
         }
 
     }
 
     public static void signIn(View view) {
-        String userName = view.findViewById(R.id.userNameTextView).toString();
+        String userName = view.findViewById(R.id.usernameEditText).toString();
         String password = view.findViewById(R.id.passwordText).toString();
         User user = new User(userName, password);
         Header header = new Header("sign_in");
         Body body = new Body();
         body.getUserList().add(user);
         Request request = new Request(header, body);
-        new DoingBackground().execute(request);
+        //new DoingBackground().execute(request);
+    }
+
+    public void loadSetFragment(View view) {
+        fragmentTransaction = fragmentManager.beginTransaction();
+        FrameLayout frameLayouts = (FrameLayout) view.findViewById(R.id.main_fragment);;
+        frameLayouts.setVisibility(View.VISIBLE);
+        MainFragment mainFragment = new MainFragment();
+        if(response.getBody().getValid()) {
+            FrameLayout frameLayouts2 = (FrameLayout) view.findViewById(R.id.fragment_login);
+            frameLayouts2.setVisibility(View.GONE);
+            fragmentTransaction.add(R.id.main_fragment, mainFragment);
+        }
+        else {
+            fragmentTransaction.hide(mainFragment);
+            frameLayouts.setVisibility(View.GONE);
+        }
+        fragmentTransaction.addToBackStack(null).commit();
     }
 
     public static String writeRequest(Request request) {
