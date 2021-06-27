@@ -1,16 +1,12 @@
 package com.example.gamerchatapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import com.example.gamerchatapp.fragments.MainFragment;
@@ -22,15 +18,11 @@ import com.example.gamerchatapp.dm.Request;
 import com.example.gamerchatapp.dm.Response;
 import com.example.gamerchatapp.dm.User;
 import com.example.gamerchatapp.fragments.LoginFragment;
-import com.google.gson.GsonBuilder;
-import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.0.0.4 ", 12345);
+                Socket socket = new Socket("10.100.102.3", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -90,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
-        String userName = view.findViewById(R.id.usernameEditText).toString();
+        String userName = view.findViewById(R.id.userNameTextView).toString();
         String password = view.findViewById(R.id.passwordText).toString();
         User user = new User(userName, password);
         Header header = new Header("sign_in");
@@ -117,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null).commit();
     }
 
-    public static String writeRequest(Request request) {
+    public String writeRequest(Request request) {
         String reqStr = null;
         Gson gson = new Gson();
         reqStr = gson.toJson(request);
         return reqStr;
     }
 
-    public static Response readResponse(String responseString) {
+    public Response readResponse(String responseString) {
         Gson gson = new Gson();
         Response response = gson.fromJson(responseString, Response.class);
         return response;
