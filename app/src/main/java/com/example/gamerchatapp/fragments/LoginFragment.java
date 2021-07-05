@@ -66,17 +66,22 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        Button b = (Button) view.findViewById(R.id.sign_in_button);
-        b.setOnClickListener(new View.OnClickListener() {
+        Button b_signIn = (Button) view.findViewById(R.id.sign_in_button);
+        b_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).signIn(v);
 
             }
         });
+        Button b_reg = (Button) view.findViewById(R.id.register_button);
+        b_reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).loadSetFragment("register_page");
+            }
+        });
         //view.findViewById(R.id.sign_in_button).setOnClickListener(MainActivity::signIn);
-        //Activity activity = getActivity();
-
         return view;
     }
 
