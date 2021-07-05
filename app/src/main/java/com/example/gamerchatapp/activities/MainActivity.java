@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import com.example.gamerchatapp.fragments.MainFragment;
+import com.example.gamerchatapp.fragments.RegisterFragment;
 import com.google.gson.Gson;
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.dm.Body;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private DoingBackground doingBackground;
     private EditText nameText;
     private EditText passText;
+    private EditText emailText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.100.102.3", 12345);
+                Socket socket = new Socket("10.0.0.4", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -95,19 +97,51 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground().execute(request);
     }
 
+    public void signUp(View view) {
+        nameText = (EditText) findViewById(R.id.username_editTextReg);
+        passText = (EditText) findViewById(R.id.password_TextReg);
+        emailText = (EditText) findViewById(R.id.emailText);
+        String userName = nameText.getText().toString();
+        String password = passText.getText().toString();
+        String email = emailText.getText().toString();
+        User user = new User(userName, password, email);
+        Header header = new Header("sign_up");
+        Body body = new Body();
+        body.getUserList().add(user);
+        Request request = new Request(header, body);
+        new DoingBackground().execute(request);
+    }
+
     public void loadSetFragment(String action) {
         fragmentTransaction = fragmentManager.beginTransaction();
-        FrameLayout frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
-        frameLayouts.setVisibility(View.VISIBLE);
-        MainFragment mainFragment = new MainFragment();
+        FrameLayout frameLayouts = null;
+        MainFragment mainFragment = null;
+        FrameLayout frameLayouts2 = null;
+        RegisterFragment registerFragment = null;
+
         if(action.equals("sign_in success")) {
-            FrameLayout frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
+            frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
+            frameLayouts.setVisibility(View.VISIBLE);
+            mainFragment = new MainFragment();;
+            frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
             frameLayouts2.setVisibility(View.GONE);
             fragmentTransaction.add(R.id.main_fragment, mainFragment);
         }
-        else {
-            fragmentTransaction.hide(mainFragment);
-            frameLayouts.setVisibility(View.GONE);
+        else if(action.equals("sign_up success")) {
+            frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
+            frameLayouts.setVisibility(View.VISIBLE);
+            LoginFragment loginFragment = new LoginFragment();
+            frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_register);
+            frameLayouts2.setVisibility(View.GONE);
+            fragmentTransaction.add(R.id.fragment_login, loginFragment);
+        }
+        else if(action.equals("register_page")){
+            registerFragment = new RegisterFragment();
+            frameLayouts = (FrameLayout) findViewById(R.id.fragment_register);
+            frameLayouts.setVisibility(View.VISIBLE);
+            frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
+            frameLayouts2.setVisibility(View.GONE);
+            fragmentTransaction.add(R.id.fragment_register, registerFragment);
         }
         fragmentTransaction.addToBackStack(null).commit();
     }
