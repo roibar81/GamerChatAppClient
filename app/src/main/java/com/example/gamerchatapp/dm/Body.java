@@ -3,7 +3,8 @@ package com.example.gamerchatapp.dm;
 import java.util.ArrayList;
 
 public class Body {
-
+    private User user;
+    private Game game;
     private ArrayList<User> userList;
     private ArrayList<Game> gameList;
     private String pattern;
@@ -20,6 +21,21 @@ public class Body {
         this.gameList = new ArrayList<>();
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
     public String getPattern() {
         return pattern;
@@ -48,7 +64,9 @@ public class Body {
     @Override
     public String toString() {
         return "Body{" +
-                "userList=" + userList +
+                "user=" + user +
+                ", game=" + game +
+                ", userList=" + userList +
                 ", gameList=" + gameList +
                 ", pattern='" + pattern + '\'' +
                 '}';

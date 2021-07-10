@@ -7,6 +7,11 @@ public class Game {
     private String catagory;
     private int id;
 
+    public Game(String name, String image) {
+        this.name = name;
+        this.image = image;
+    }
+
     public Game(int id, String name, String image, String catagory) {
         this.id = id;
         this.name = name;
