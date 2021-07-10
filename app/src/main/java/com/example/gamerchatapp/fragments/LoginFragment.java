@@ -13,6 +13,9 @@ import android.widget.Button;
 
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.activities.MainActivity;
+import com.example.gamerchatapp.dm.Body;
+import com.example.gamerchatapp.dm.Header;
+import com.example.gamerchatapp.dm.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +32,7 @@ public class LoginFragment extends Fragment {
     // TODO: Rename and change types of parametersv
     private String mParam1;
     private String mParam2;
+    private Response response;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -71,14 +75,14 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).signIn(v);
-
             }
         });
+        response = new Response(new Header("register_page"), new Body());
         Button b_reg = (Button) view.findViewById(R.id.register_button);
         b_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).loadSetFragment("register_page");
+                ((MainActivity) getActivity()).loadSetFragment(response);
             }
         });
         //view.findViewById(R.id.sign_in_button).setOnClickListener(MainActivity::signIn);

@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+
+import com.example.gamerchatapp.adapter.CustomAdapter;
 import com.example.gamerchatapp.fragments.MainFragment;
 import com.example.gamerchatapp.fragments.RegisterFragment;
 import com.google.gson.Gson;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText nameText;
     private EditText passText;
     private EditText emailText;
+    private CustomAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.0.0.4", 12345);
+                Socket socket = new Socket("10.100.102.7", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Response response) {
             super.onPostExecute(response);
-            loadSetFragment(response.getHeader().getAction());
+            loadSetFragment(response);
         }
 
     }
@@ -112,36 +115,41 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground().execute(request);
     }
 
-    public void loadSetFragment(String action) {
+    public void loadSetFragment(Response response) {
         fragmentTransaction = fragmentManager.beginTransaction();
         FrameLayout frameLayouts = null;
         MainFragment mainFragment = null;
         FrameLayout frameLayouts2 = null;
         RegisterFragment registerFragment = null;
 
-        if(action.equals("sign_in success")) {
-            frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
-            frameLayouts.setVisibility(View.VISIBLE);
-            mainFragment = new MainFragment();;
-            frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
-            frameLayouts2.setVisibility(View.GONE);
-            fragmentTransaction.add(R.id.main_fragment, mainFragment);
-        }
-        else if(action.equals("sign_up success")) {
-            frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
-            frameLayouts.setVisibility(View.VISIBLE);
-            LoginFragment loginFragment = new LoginFragment();
-            frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_register);
-            frameLayouts2.setVisibility(View.GONE);
-            fragmentTransaction.add(R.id.fragment_login, loginFragment);
-        }
-        else if(action.equals("register_page")){
-            registerFragment = new RegisterFragment();
-            frameLayouts = (FrameLayout) findViewById(R.id.fragment_register);
-            frameLayouts.setVisibility(View.VISIBLE);
-            frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
-            frameLayouts2.setVisibility(View.GONE);
-            fragmentTransaction.add(R.id.fragment_register, registerFragment);
+        switch(response.getHeader().getAction()) {
+            case "sign_in success":
+                frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
+                frameLayouts.setVisibility(View.VISIBLE);
+                mainFragment = new MainFragment();;
+                frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
+                frameLayouts2.setVisibility(View.GONE);
+                adapter = new CustomAdapter(response.getBody().getGameList());
+                fragmentTransaction.add(R.id.main_fragment, mainFragment);
+                break;
+            case "sign_up success":
+                frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
+                frameLayouts.setVisibility(View.VISIBLE);
+                LoginFragment loginFragment = new LoginFragment();
+                frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_register);
+                frameLayouts2.setVisibility(View.GONE);
+                fragmentTransaction.add(R.id.fragment_login, loginFragment);
+                break;
+            case "register_page":
+                registerFragment = new RegisterFragment();
+                frameLayouts = (FrameLayout) findViewById(R.id.fragment_register);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
+                frameLayouts2.setVisibility(View.GONE);
+                fragmentTransaction.add(R.id.fragment_register, registerFragment);
+                break;
+            default:
+                break;
         }
         fragmentTransaction.addToBackStack(null).commit();
     }
