@@ -1,22 +1,20 @@
 package com.example.gamerchatapp.dm;
 
-
 public class Game {
-    private String name;
-    private String image;
-    private String catagory;
     private int id;
+    private String name;
+    private byte[] imageBlob;
+    private String category;
 
-    public Game(String name, String image) {
-        this.name = name;
-        this.image = image;
+    public Game() {
+
     }
 
-    public Game(int id, String name, String image, String catagory) {
+    public Game(int id, String name, byte[] imageBlob, String category) {
         this.id = id;
         this.name = name;
-        this.image = image;
-        this.catagory = catagory;
+        this.imageBlob = imageBlob;
+        this.category = category;
     }
 
     public int getId() {
@@ -35,25 +33,31 @@ public class Game {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
+    public String getCategory() {
+        return category;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getCatagory() {
-        return catagory;
+    public byte[] getImageBlob() {
+        return imageBlob;
     }
 
-    public void setCatagory(String catagory) {
-        this.catagory = catagory;
+    public void setImageBlob(byte[] imageBlob) {
+        this.imageBlob = imageBlob;
     }
 
     @Override
     public String toString() {
-        return "Game [catagory=" + catagory + ", id=" + id + ", image=" + image + ", name=" + name + "]";
+        return "Game{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageBlob=" + imageBlob +
+                ", category='" + category + '\'' +
+                '}';
     }
 
 }
+

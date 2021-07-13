@@ -8,8 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.dm.Game;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder>{
@@ -23,13 +27,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         CardView gameCardView;
         TextView textViewGameName;
-        ImageView imageView;
+        ImageView gameImageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             this.gameCardView = itemView.findViewById(R.id.game_cardView);
             this.textViewGameName = itemView.findViewById(R.id.game_textViewGame);
-            this.imageView = itemView.findViewById(R.id.imageView);
+            this.gameImageView = itemView.findViewById(R.id.gameImageView);
         }
     }
 
@@ -44,11 +48,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, int position) {
         TextView textViewName = holder.textViewGameName;
-        ImageView imageView = holder.imageView;
+        ImageView gameImageView = holder.gameImageView;
         CardView gameCardView = holder.gameCardView;
 
         textViewName.setText(gameList.get(position).getName());
-        imageView.setImageResource(Integer.parseInt(gameList.get(position).getImage()));
+
+        Glide.with(holder.gameImageView.getContext())
+                .load(new File(String.valueOf(gameList.get(position).getImageBlob())))
+                .into(gameImageView);
+
+//        gameImageView.setImageResource(Integer.parseInt(gameList.get(position).getImageBlob()));
 //        cardView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -61,4 +70,5 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public int getItemCount() {
         return gameList.size();
     }
+
 }
