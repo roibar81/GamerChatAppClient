@@ -16,6 +16,8 @@ import com.example.gamerchatapp.adapter.CustomAdapter;
 import com.example.gamerchatapp.dm.Body;
 import com.example.gamerchatapp.dm.Header;
 import com.example.gamerchatapp.fragments.MainFragment;
+import com.example.gamerchatapp.fragments.MenuFragment;
+import com.example.gamerchatapp.fragments.ProfileFragment;
 import com.example.gamerchatapp.fragments.RegisterFragment;
 import com.google.gson.Gson;
 import com.example.gamerchatapp.R;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.0.0.16", 12345);
+                Socket socket = new Socket("10.100.102.4", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -125,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
         MainFragment mainFragment = null;
         FrameLayout frameLayouts2 = null;
         RegisterFragment registerFragment = null;
+        MenuFragment menuFragment = null;
+        ProfileFragment profileFragment = null;
 
         switch(response.getHeader().getAction()) {
             case "sign_in success":
@@ -153,6 +157,25 @@ public class MainActivity extends AppCompatActivity {
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
                 frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_register, registerFragment);
+                break;
+            case "profile_page":
+                profileFragment = new ProfileFragment();
+                frameLayouts = (FrameLayout) findViewById(R.id.fragment_profile);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
+                frameLayouts2.setVisibility(View.GONE);
+                fragmentTransaction.add(R.id.fragment_profile,  profileFragment);
+                break;
+            case "menu_page":
+                menuFragment = new MenuFragment();
+                frameLayouts  = (FrameLayout) findViewById(R.id.menu_fragment);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.main_fragment);
+                frameLayouts2.setVisibility(View.GONE);
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                menuFragment.setArguments(bundle);
+                fragmentTransaction.add(R.id.menu_fragment, menuFragment);
                 break;
             default:
                 break;
