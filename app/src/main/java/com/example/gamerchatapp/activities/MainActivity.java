@@ -3,27 +3,32 @@ package com.example.gamerchatapp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-
 import com.example.gamerchatapp.adapter.CustomAdapter;
+import com.example.gamerchatapp.dm.Body;
+import com.example.gamerchatapp.dm.Header;
 import com.example.gamerchatapp.fragments.MainFragment;
 import com.example.gamerchatapp.fragments.RegisterFragment;
 import com.google.gson.Gson;
 import com.example.gamerchatapp.R;
-import com.example.gamerchatapp.dm.Body;
-import com.example.gamerchatapp.dm.Header;
 import com.example.gamerchatapp.dm.Request;
 import com.example.gamerchatapp.dm.Response;
 import com.example.gamerchatapp.dm.User;
 import com.example.gamerchatapp.fragments.LoginFragment;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.ConnectException;
 import java.net.Socket;
 
@@ -33,12 +38,13 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     private String reqStr;
     private String resStr;
-    private Response response;
     private DoingBackground doingBackground;
     private EditText nameText;
     private EditText passText;
     private EditText emailText;
     private CustomAdapter adapter;
+    private Response response;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class DoingBackground extends AsyncTask<Request, Void, Response> {
-
+        private Response response;
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.100.102.7", 12345);
+                Socket socket = new Socket("10.0.0.16", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -69,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
                 resStr = reader.readObject().toString();
                 response = readResponse(resStr);
-
             }catch(ConnectException | ClassNotFoundException e) {
                 System.out.println(e.getMessage());
             } catch(IOException e) {
@@ -78,15 +83,14 @@ public class MainActivity extends AppCompatActivity {
             return response;
         }
 
-
         @Override
         protected void onPostExecute(Response response) {
             super.onPostExecute(response);
+            //Log.d("response", response.toString());
             loadSetFragment(response);
         }
 
     }
-
     public void signIn(View view) {
         nameText = (EditText) findViewById(R.id.userNameEditText);
         passText = (EditText) findViewById(R.id.passwordText);
@@ -129,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
                 mainFragment = new MainFragment();;
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
                 frameLayouts2.setVisibility(View.GONE);
-                adapter = new CustomAdapter(response.getBody().getGameList());
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                mainFragment.setArguments(bundle);
                 fragmentTransaction.add(R.id.main_fragment, mainFragment);
                 break;
             case "sign_up success":
@@ -154,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null).commit();
     }
 
-    public String writeRequest(Request request) {
+    public String writeRequest (Request request) {
         String reqStr = null;
         Gson gson = new Gson();
         reqStr = gson.toJson(request);
@@ -162,8 +168,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public Response readResponse(String responseString) {
-        Gson gson = new Gson();
-        Response response = gson.fromJson(responseString, Response.class);
+        Response response = null;
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        try(Reader reader = new StringReader(responseString)){
+            //Type REVIEW_TYPE = new TypeToken<Request>() {}.getType();
+            response = gson.fromJson(reader, Response.class);
+        }catch (IOException e) {
+            e.getMessage();
+        }
         return response;
     }
 

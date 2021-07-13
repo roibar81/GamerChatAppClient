@@ -1,5 +1,7 @@
 package com.example.gamerchatapp.fragments;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,12 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.activities.MainActivity;
 import com.example.gamerchatapp.adapter.CustomAdapter;
 import com.example.gamerchatapp.dm.Game;
+import com.example.gamerchatapp.dm.Response;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -32,10 +39,10 @@ public class MainFragment extends Fragment {
     private  static CustomAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
-    private static ArrayList<Game> gameList;
+    private Response response;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    //private Response response;
     private String mParam2;
 
     public MainFragment() {
@@ -64,8 +71,11 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            response = bundle.getParcelable("res");
         }
     }
 
@@ -73,17 +83,35 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        ((MainActivity) getActivity()).setContentView(view);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        TextView welcomeTextView = view.findViewById(R.id.welcomTextView);
+        welcomeTextView.setText("welcome " +response.getBody().getUser().getName());
         recyclerView = (RecyclerView) view.findViewById(R.id.sug_games_view);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        saveImages(response);
+        adapter = new CustomAdapter(response.getBody().getGameList());
         recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    public void saveImages(Response response) {
+        File f;
+        FileOutputStream fs;
+        for(Game g : response.getBody().getGameList()) {
+            try {
+                f = new File("app/src/main/res/drawable/"+g.getName()+".jpg");
+                if(f.exists())
+                    f.delete();
+                fs = new FileOutputStream(f.getPath());
+                fs.write(g.getImageBlob());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

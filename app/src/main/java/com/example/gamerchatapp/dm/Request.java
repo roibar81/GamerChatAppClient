@@ -1,14 +1,19 @@
 package com.example.gamerchatapp.dm;
 
+import java.util.ArrayList;
+
 public class Request {
 
     private Header header;
     private Body body;
 
+
+
     public Request(Header header, Body body) {
         this.header = header;
         this.body = body;
     }
+
 
     public Header getHeader() {
         return header;
@@ -28,9 +33,8 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Request{" +
-                "header=" + header +
-                ", body=" + body +
-                '}';
+        return "Request [body=" + body + ", header=" + header + "]";
     }
+
+
 }
