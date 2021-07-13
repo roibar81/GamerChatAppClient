@@ -134,10 +134,8 @@ public class MainActivity extends AppCompatActivity {
         switch(response.getHeader().getAction()) {
             case "sign_in success":
                 frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
-                frameLayouts.setVisibility(View.VISIBLE);
                 mainFragment = new MainFragment();;
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
-                frameLayouts2.setVisibility(View.GONE);
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);
                 mainFragment.setArguments(bundle);
@@ -145,34 +143,26 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "sign_up success":
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
-                frameLayouts.setVisibility(View.VISIBLE);
                 loginFragment = new LoginFragment();
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_register);
-                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_login, loginFragment);
                 break;
             case "register_page":
                 registerFragment = new RegisterFragment();
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_register);
-                frameLayouts.setVisibility(View.VISIBLE);
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
-                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_register, registerFragment);
                 break;
             case "profile_page":
                 profileFragment = new ProfileFragment();
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_profile);
-                frameLayouts.setVisibility(View.VISIBLE);
                 frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
-                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_profile,  profileFragment);
                 break;
             case "menu_page":
                 menuFragment = new MenuFragment();
                 frameLayouts  = (FrameLayout) findViewById(R.id.menu_fragment);
-                frameLayouts.setVisibility(View.VISIBLE);
                 frameLayouts2 = (FrameLayout) findViewById(R.id.main_fragment);
-                frameLayouts2.setVisibility(View.GONE);
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);
                 menuFragment.setArguments(bundle);
@@ -183,12 +173,20 @@ public class MainActivity extends AppCompatActivity {
             case "logOut":
                 loginFragment = new LoginFragment();
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
-                frameLayouts.setVisibility(View.VISIBLE);
                 frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
-                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_login, loginFragment);
                 break;
+            case "home":
+                mainFragment = new MainFragment();
+                frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                mainFragment.setArguments(bundle);
+                fragmentTransaction.add(R.id.main_fragment, mainFragment);
         }
+        frameLayouts.setVisibility(View.VISIBLE);
+        frameLayouts2.setVisibility(View.GONE);
         fragmentTransaction.addToBackStack(null).commit();
     }
 
