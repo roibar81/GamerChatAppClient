@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.100.102.4", 12345);
+                Socket socket = new Socket("10.100.102.7", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         RegisterFragment registerFragment = null;
         MenuFragment menuFragment = null;
         ProfileFragment profileFragment = null;
+        LoginFragment loginFragment = null;
 
         switch(response.getHeader().getAction()) {
             case "sign_in success":
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             case "sign_up success":
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
                 frameLayouts.setVisibility(View.VISIBLE);
-                LoginFragment loginFragment = new LoginFragment();
+                loginFragment = new LoginFragment();
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_register);
                 frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_login, loginFragment);
@@ -178,6 +179,14 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.menu_fragment, menuFragment);
                 break;
             default:
+                break;
+            case "logOut":
+                loginFragment = new LoginFragment();
+                frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
+                frameLayouts2.setVisibility(View.GONE);
+                fragmentTransaction.add(R.id.fragment_login, loginFragment);
                 break;
         }
         fragmentTransaction.addToBackStack(null).commit();

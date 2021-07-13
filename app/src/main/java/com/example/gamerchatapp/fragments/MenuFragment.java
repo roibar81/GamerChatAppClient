@@ -79,7 +79,14 @@ public class MenuFragment extends Fragment {
                 ((MainActivity) getActivity()).loadSetFragment(response);
             }
         });
-
+        Button b_logOut = (Button) view.findViewById(R.id.logOut_button_menu);
+        b_logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                response.getHeader().setAction("logOut");
+                ((MainActivity) getActivity()).loadSetFragment(response);
+            }
+        });
         return view;
     }
 }
