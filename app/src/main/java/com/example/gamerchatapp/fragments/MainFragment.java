@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.gamerchatapp.R;
@@ -86,6 +87,15 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         TextView welcomeTextView = view.findViewById(R.id.welcomTextView);
         welcomeTextView.setText("welcome " +response.getBody().getUser().getName());
+        Button b_menu = (Button) view.findViewById(R.id.menu_button);
+        b_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                response.getHeader().setAction("menu_page");
+                ((MainActivity) getActivity()).loadSetFragment(response);
+            }
+        });
+
         recyclerView = (RecyclerView) view.findViewById(R.id.sug_games_view);
         recyclerView.setHasFixedSize(true);
 
