@@ -1,8 +1,11 @@
 package com.example.gamerchatapp.dm;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class Body {
+public class Body implements Parcelable {
     private User user;
     private Game game;
     private ArrayList<User> userList;
@@ -15,11 +18,58 @@ public class Body {
         this.pattern = "";
     }
 
-    public Body(String pattern) {
-        this.pattern = pattern;
-        this.userList = new ArrayList<>();
-        this.gameList = new ArrayList<>();
+    public Body(ArrayList<User> userList, ArrayList<Game> gameList) {
+        this.userList = userList;
+        this.gameList = gameList;
+        this.pattern = "";
     }
+
+    public Body(ArrayList<User> userList, ArrayList<Game> gameList, String pattern) {
+        this.userList = userList;
+        this.gameList = gameList;
+        this.pattern = pattern;
+    }
+
+    public Body(User user, ArrayList<User> userList, ArrayList<Game> gameList, String pattern) {
+        this.user = user;
+        this.userList = userList;
+        this.gameList = gameList;
+        this.pattern = pattern;
+    }
+
+    protected Body(Parcel in) {
+        this.user = in.readParcelable(User.class.getClassLoader());
+        this.game = in.readParcelable(Game.class.getClassLoader());
+        this.userList = in.readArrayList(ArrayList.class.getClassLoader());
+        this.gameList = in.readArrayList(ArrayList.class.getClassLoader());
+        this.pattern = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable((Parcelable) this.user, flags);
+        dest.writeParcelable((Parcelable) this.game, flags);
+        dest.writeList(this.userList);
+        dest.writeList(this.gameList);
+        dest.writeString(this.pattern);
+    }
+
+    public static final Creator<Body> CREATOR = new Creator<Body>() {
+        @Override
+        public Body createFromParcel(Parcel in) {
+            return new Body(in);
+        }
+
+        @Override
+        public Body[] newArray(int size) {
+            return new Body[size];
+        }
+    };
 
     public User getUser() {
         return user;
@@ -35,14 +85,6 @@ public class Body {
 
     public void setGame(Game game) {
         this.game = game;
-    }
-
-    public String getPattern() {
-        return pattern;
-    }
-
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
     }
 
     public ArrayList<User> getUserList() {
@@ -61,14 +103,18 @@ public class Body {
         this.gameList = gameList;
     }
 
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
     @Override
     public String toString() {
-        return "Body{" +
-                "user=" + user +
-                ", game=" + game +
-                ", userList=" + userList +
-                ", gameList=" + gameList +
-                ", pattern='" + pattern + '\'' +
-                '}';
+        return "Body [game=" + game + ", gameList=" + gameList + ", pattern=" + pattern + ", user=" + user
+                + ", userList=" + userList + "]";
     }
+
 }
