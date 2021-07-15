@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.gamerchatapp.R;
+import com.example.gamerchatapp.dm.ChatRoom;
 import com.example.gamerchatapp.dm.Game;
 import com.example.gamerchatapp.dm.Response;
 import com.example.gamerchatapp.dm.User;
@@ -20,10 +21,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     private final ArrayList<Game> gameList;
     private final ArrayList<User> friendsList;
+    private final ArrayList<ChatRoom> chatList;
 
-    public CustomAdapter(ArrayList<Game> gameList, ArrayList<User> friendsList) {
+    public CustomAdapter(ArrayList<Game> gameList, ArrayList<User> friendsList, ArrayList<ChatRoom> chatList) {
         this.gameList = gameList;
         this.friendsList = friendsList;
+        this.chatList = chatList;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -71,11 +74,21 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             itemName.setText(friendsList.get(position).getName());
             imageView_item.setImageResource(R.drawable.usericon);
         }
+        if(chatList != null) {
+            itemName.setText(chatList.get(position).getName());
+            imageView_item.setImageResource(chatList.get(position).getImage());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return gameList != null ? gameList.size() : friendsList.size();
+        if(gameList != null)
+            return gameList.size();
+        else if(friendsList != null)
+            return friendsList.size();
+        else
+            return chatList.size();
+
     }
 
 }
