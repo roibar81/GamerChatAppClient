@@ -1,5 +1,6 @@
 package com.example.gamerchatapp.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,67 +9,73 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.dm.Game;
+import com.example.gamerchatapp.dm.Response;
+import com.example.gamerchatapp.dm.User;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder>{
 
-    private ArrayList<Game> gameList;
+    private final ArrayList<Game> gameList;
+    private final ArrayList<User> friendsList;
 
-    public CustomAdapter(ArrayList<Game> gameList) {
+    public CustomAdapter(ArrayList<Game> gameList, ArrayList<User> friendsList) {
         this.gameList = gameList;
+        this.friendsList = friendsList;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        CardView gameCardView;
-        TextView textViewGameName;
-        ImageView gameImageView;
+        CardView itemCardView;
+        TextView name_textView_item;
+        ImageView imageView_item;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.gameCardView = itemView.findViewById(R.id.game_cardView);
-            this.textViewGameName = itemView.findViewById(R.id.game_textViewGame);
-            this.gameImageView = itemView.findViewById(R.id.gameImageView);
+            this.itemCardView = itemView.findViewById(R.id.itemCardView);
+            this.name_textView_item = itemView.findViewById(R.id.name_textView_item);
+            this.imageView_item = itemView.findViewById(R.id.imageView_item);
         }
     }
 
     @NonNull
     @Override
     public CustomAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, int position) {
-        TextView textViewName = holder.textViewGameName;
-        ImageView gameImageView = holder.gameImageView;
-        CardView gameCardView = holder.gameCardView;
+        TextView itemName = holder.name_textView_item;
+        ImageView imageView_item = holder.imageView_item;
+        CardView gameCardView = holder.itemCardView;
 
-        textViewName.setText(gameList.get(position).getName());
+        if(gameList != null) {
+            itemName.setText(gameList.get(position).getName());
 
-        Glide.with(holder.gameImageView.getContext())
-                .load(new File(String.valueOf(gameList.get(position).getImageBlob())))
-                .into(gameImageView);
-
-//        gameImageView.setImageResource(Integer.parseInt(gameList.get(position).getImageBlob()));
-//        cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                notifyItemRemoved(position);
-//            }
-//        });
+            int id = holder.itemView.getResources()
+                    .getIdentifier(
+                            gameList.get(position).getName(),
+                            "drawable", null);
+            imageView_item.setImageResource(gameList.get(position).getImage());
+            Log.d("draw", String.valueOf(R.drawable.warcraft));
+            Log.d("draw2", String.valueOf(R.drawable.gtav));
+            Log.d("draw3", String.valueOf(R.drawable.fifa22));
+            Log.d("draw4", String.valueOf(R.drawable.nba_2k));
+            Log.d("draw5", String.valueOf(R.drawable.heroes3));
+        }
+        if(friendsList != null) {
+            itemName.setText(friendsList.get(position).getName());
+            imageView_item.setImageResource(R.drawable.usericon);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return gameList.size();
+        return gameList != null ? gameList.size() : friendsList.size();
     }
 
 }

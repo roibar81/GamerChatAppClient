@@ -1,28 +1,26 @@
 package com.example.gamerchatapp.dm;
 
+import com.example.gamerchatapp.R;
+
 public class Game {
-    private int id;
     private String name;
     private byte[] imageBlob;
     private String category;
+    private int image;
 
     public Game() {
 
     }
 
-    public Game(int id, String name, byte[] imageBlob, String category) {
-        this.id = id;
+    public Game(String name, int image) {
+        this.name = name;
+        this.image = image;
+    }
+
+    public Game(String name, byte[] imageBlob, String category) {
         this.name = name;
         this.imageBlob = imageBlob;
         this.category = category;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -49,10 +47,17 @@ public class Game {
         this.imageBlob = imageBlob;
     }
 
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Game{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", imageBlob=" + imageBlob +
                 ", category='" + category + '\'' +
