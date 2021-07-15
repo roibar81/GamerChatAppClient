@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         User user = new User(userName, password);
         Header header = new Header("sign_in");
         Body body = new Body();
-        body.getUserList().add(user);
+        body.setUser(user);
         Request request = new Request(header, body);
         new DoingBackground().execute(request);
     }
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         User user = new User(userName, password, email);
         Header header = new Header("sign_up");
         Body body = new Body();
-        body.getUserList().add(user);
+        body.setUser(user);
         Request request = new Request(header, body);
         new DoingBackground().execute(request);
     }
@@ -202,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
         try(Reader reader = new StringReader(responseString)){
-            //Type REVIEW_TYPE = new TypeToken<Request>() {}.getType();
             response = gson.fromJson(reader, Response.class);
         }catch (IOException e) {
             e.getMessage();

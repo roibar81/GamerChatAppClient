@@ -10,30 +10,35 @@ public class Body implements Parcelable {
     private Game game;
     private ArrayList<User> userList;
     private ArrayList<Game> gameList;
+    private ArrayList<ChatRoom> chatList;
     private String pattern;
 
     public Body() {
         this.userList = new ArrayList<>();
         this.gameList = new ArrayList<>();
+        this.chatList = new ArrayList<>();
         this.pattern = "";
     }
 
-    public Body(ArrayList<User> userList, ArrayList<Game> gameList) {
+    public Body(ArrayList<User> userList, ArrayList<Game> gameList, ArrayList<ChatRoom> chatList) {
         this.userList = userList;
         this.gameList = gameList;
+        this.chatList = chatList;
         this.pattern = "";
     }
 
-    public Body(ArrayList<User> userList, ArrayList<Game> gameList, String pattern) {
+    public Body(ArrayList<User> userList, ArrayList<Game> gameList, ArrayList<ChatRoom> chatList, String pattern) {
         this.userList = userList;
         this.gameList = gameList;
+        this.chatList = chatList;
         this.pattern = pattern;
     }
 
-    public Body(User user, ArrayList<User> userList, ArrayList<Game> gameList, String pattern) {
+    public Body(User user, ArrayList<User> userList, ArrayList<Game> gameList, ArrayList<ChatRoom> chatList,String pattern) {
         this.user = user;
         this.userList = userList;
         this.gameList = gameList;
+        this.chatList = chatList;
         this.pattern = pattern;
     }
 
@@ -42,6 +47,7 @@ public class Body implements Parcelable {
         this.game = in.readParcelable(Game.class.getClassLoader());
         this.userList = in.readArrayList(ArrayList.class.getClassLoader());
         this.gameList = in.readArrayList(ArrayList.class.getClassLoader());
+        this.chatList = in.readArrayList(ArrayList.class.getClassLoader());
         this.pattern = in.readString();
     }
 
@@ -56,6 +62,7 @@ public class Body implements Parcelable {
         dest.writeParcelable((Parcelable) this.game, flags);
         dest.writeList(this.userList);
         dest.writeList(this.gameList);
+        dest.writeList(this.chatList);
         dest.writeString(this.pattern);
     }
 
@@ -103,6 +110,14 @@ public class Body implements Parcelable {
         this.gameList = gameList;
     }
 
+    public ArrayList<ChatRoom> getChatList() {
+        return chatList;
+    }
+
+    public void setChatList(ArrayList<ChatRoom> chatList) {
+        this.chatList = chatList;
+    }
+
     public String getPattern() {
         return pattern;
     }
@@ -113,8 +128,13 @@ public class Body implements Parcelable {
 
     @Override
     public String toString() {
-        return "Body [game=" + game + ", gameList=" + gameList + ", pattern=" + pattern + ", user=" + user
-                + ", userList=" + userList + "]";
+        return "Body{" +
+                "user=" + user +
+                ", game=" + game +
+                ", userList=" + userList +
+                ", gameList=" + gameList +
+                ", chatList=" + chatList +
+                ", pattern='" + pattern + '\'' +
+                '}';
     }
-
 }
