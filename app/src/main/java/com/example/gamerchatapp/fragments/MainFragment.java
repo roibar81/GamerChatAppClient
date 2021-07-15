@@ -1,30 +1,20 @@
 package com.example.gamerchatapp.fragments;
 
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.activities.MainActivity;
 import com.example.gamerchatapp.adapter.CustomAdapter;
 import com.example.gamerchatapp.dm.Game;
 import com.example.gamerchatapp.dm.Response;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,9 +24,12 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
 
 
-    private  static CustomAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private static RecyclerView recyclerView;
+    private static CustomAdapter adapter;
+    private static CustomAdapter adapter2;
+    private static CustomAdapter adapter3;
+    private static RecyclerView gamesRecyclerView;
+    private static RecyclerView friendsRecyclerView;
+    private static RecyclerView chatsRecyclerView;
     private Response response;
 
     public MainFragment() {
@@ -87,32 +80,28 @@ public class MainFragment extends Fragment {
             }
         });
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.sug_games_view);
-        recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        gamesRecyclerView = (RecyclerView) view.findViewById(R.id.sug_games_view);
+        gamesRecyclerView.setHasFixedSize(true);
+        gamesRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1, GridLayoutManager.HORIZONTAL, false));
+        gamesRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        saveImages(response);
-        adapter = new CustomAdapter(response.getBody().getGameList());
-        recyclerView.setAdapter(adapter);
+        friendsRecyclerView = (RecyclerView) view.findViewById(R.id.sug_friends_rview);
+        friendsRecyclerView.setHasFixedSize(true);
+        friendsRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1, GridLayoutManager.HORIZONTAL, false));
+        friendsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        chatsRecyclerView = (RecyclerView) view.findViewById(R.id.chats_rview);
+        chatsRecyclerView.setHasFixedSize(true);
+        chatsRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1, GridLayoutManager.HORIZONTAL, false));
+        chatsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        adapter = new CustomAdapter(response.getBody().getGameList(), null);
+        gamesRecyclerView.setAdapter(adapter);
+        adapter2 = new CustomAdapter(null, response.getBody().getUserList());
+        friendsRecyclerView.setAdapter(adapter2);
+
         return view;
     }
 
-    public void saveImages(Response response) {
-        File f;
-        FileOutputStream fs;
-        for(Game g : response.getBody().getGameList()) {
-            try {
-                f = new File("app/src/main/res/drawable/"+g.getName()+".jpg");
-                if(f.exists())
-                    f.delete();
-                fs = new FileOutputStream(f.getPath());
-                fs.write(g.getImageBlob());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
