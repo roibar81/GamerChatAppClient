@@ -86,17 +86,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         if(chatList != null) {
             itemName.setText(chatList.get(position).getName());
             imageView_item.setImageResource(chatList.get(position).getImage());
+            itemCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    response.getHeader().setAction("chat_room_page");
+                    response.getBody().getChatRoom().setChatRoom_id(position);
+                    response.getBody().getChatRoom().setName(holder.name_textView_item.getText().toString());
+                    ((MainActivity) context).enterChatRoom(response);
+                }
+            });
         }
-        itemCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                response.getHeader().setAction("chat_room_page");
-                response.getBody().getChatRoom().setName(holder.name_textView_item.getText().toString());
-                ((MainActivity) context).loadSetFragment(response);
 
-            }
-
-        });
     }
 
     @Override
