@@ -3,12 +3,18 @@ package com.example.gamerchatapp.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.gamerchatapp.R;
+import com.example.gamerchatapp.activities.MainActivity;
+import com.example.gamerchatapp.adapter.MessageAdapter;
+import com.example.gamerchatapp.dm.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,14 +23,9 @@ import com.example.gamerchatapp.R;
  */
 public class ChatFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private MessageAdapter messageAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private Response response;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -42,8 +43,6 @@ public class ChatFragment extends Fragment {
     public static ChatFragment newInstance(String param1, String param2) {
         ChatFragment fragment = new ChatFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +51,11 @@ public class ChatFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
+        }
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            response = bundle.getParcelable("res");
         }
     }
 
@@ -61,6 +63,16 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        TextView chat_name_textView = (TextView) view.findViewById(R.id.chat_id_textView);
+        chat_name_textView.setText(response.getBody().getChatRoom().getName());
+        Button b_send = (Button) view.findViewById(R.id.send_button);
+        b_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).sendMessage(v, response);
+            }
+        });
+        return view;
     }
 }
