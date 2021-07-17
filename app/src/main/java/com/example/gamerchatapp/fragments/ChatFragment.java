@@ -3,17 +3,21 @@ package com.example.gamerchatapp.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.activities.MainActivity;
 import com.example.gamerchatapp.adapter.MessageAdapter;
+import com.example.gamerchatapp.dm.Messages;
 import com.example.gamerchatapp.dm.Response;
 
 /**
@@ -25,7 +29,10 @@ public class ChatFragment extends Fragment {
 
     private MessageAdapter messageAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerView;
     private Response response;
+    private String message;
+    private Messages messageObject;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -66,13 +73,28 @@ public class ChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         TextView chat_name_textView = (TextView) view.findViewById(R.id.chat_id_textView);
         chat_name_textView.setText(response.getBody().getChatRoom().getName());
+        EditText message_textView = (EditText) view.findViewById(R.id.message_editText_cr);
         Button b_send = (Button) view.findViewById(R.id.send_button);
         b_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getActivity()).sendMessage(v, response);
+                message = message_textView.getText().toString();
+                messageObject = new Messages(response.getBody().getChatRoom().getChatRoom_id(), response.getBody().getUser().getName(), message);
+                //response.getBody().getMessage().setChat_room_id(response.getBody().getChatRoom().getChatRoom_id());
+                //response.getBody().getMessage().setMessage(message);
+                //response.getBody().getMessage().setUser_name(response.getBody().getUser().getName());
+                response.getBody().setMessage(messageObject);
+                ((MainActivity) getActivity()).sendMessage(response);
             }
         });
+
+        recyclerView = view.findViewById(R.id.messages_recycler);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        messageAdapter = new MessageAdapter(response.getBody().getMessageList());
+        recyclerView.setAdapter(messageAdapter);
         return view;
     }
 }

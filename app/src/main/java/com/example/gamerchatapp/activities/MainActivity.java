@@ -3,12 +3,8 @@ package com.example.gamerchatapp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
-import android.content.SyncStatusObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,9 +19,7 @@ import com.example.gamerchatapp.fragments.ProfileFragment;
 import com.example.gamerchatapp.fragments.RegisterFragment;
 import com.google.gson.Gson;
 import com.example.gamerchatapp.R;
-import com.example.gamerchatapp.dm.Request;
-import com.example.gamerchatapp.dm.Response;
-import com.example.gamerchatapp.dm.User;
+import com.example.gamerchatapp.dm.*;
 import com.example.gamerchatapp.fragments.LoginFragment;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
@@ -49,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private CustomAdapter adapter;
     private Response response;
     private Bundle bundle;
+    private String messageText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.100.102.7", 12345);
+                Socket socket = new Socket("10.100.102.8", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -123,8 +118,19 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground().execute(request);
     }
 
-    public void sendMessage(View view, Response response) {
+    public void sendMessage(Response response) {
+        Request request = new Request(new Header("write_message"), new Body());
+        request.getBody().setMessage(response.getBody().getMessage());
+        request.getBody().setChatRoom(response.getBody().getChatRoom());
+        new DoingBackground().execute(request);
+    }
 
+    public void enterChatRoom(Response response) {
+        Request request = new Request(new Header(""), new Body());
+        request.getHeader().setAction("enter_chat_room");
+        request.getBody().setUser(response.getBody().getUser());
+        request.getBody().setChatRoom(response.getBody().getChatRoom());
+        new DoingBackground().execute(request);
     }
 
     public void loadSetFragment(Response response) {
@@ -203,12 +209,23 @@ public class MainActivity extends AppCompatActivity {
                 chatFragment.setArguments(bundle);
                 fragmentTransaction.add(R.id.fragment_chat, chatFragment);
                 break;
+            case "write_message_success":
+                EditText message_textView = findViewById(R.id.message_editText_cr);
+                message_textView.setText("");
+                chatFragment = new ChatFragment();
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                chatFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.fragment_chat, chatFragment);
+                break;
             default:
                 System.out.println("Failed");
                 break;
         }
-        frameLayouts.setVisibility(View.VISIBLE);
-        frameLayouts2.setVisibility(View.GONE);
+        if(!response.getHeader().getAction().equals("write_message_success")) {
+            frameLayouts.setVisibility(View.VISIBLE);
+            frameLayouts2.setVisibility(View.GONE);
+        }
         fragmentTransaction.addToBackStack(null).commit();
     }
 

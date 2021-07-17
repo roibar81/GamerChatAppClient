@@ -43,7 +43,7 @@
                     app:icon="@android:drawable/ic_menu_send" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/message_editText_cr"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

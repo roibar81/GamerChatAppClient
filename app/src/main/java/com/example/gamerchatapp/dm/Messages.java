@@ -6,7 +6,10 @@ public class Messages {
     private int chat_room_id;
     private String user_name;
     private String message;
-    private String timeStamp;
+
+    public Messages() {
+
+    }
 
     public Messages(int chat_room_id, String user_name, String message) {
         this.chat_room_id = chat_room_id;
@@ -14,12 +17,11 @@ public class Messages {
         this.message = message;
     }
 
-    public Messages(int message_id, int chat_room_id, String user_name, String message, String timeStamp) {
+    public Messages(int message_id, int chat_room_id, String user_name, String message) {
         this.message_id = message_id;
         this.chat_room_id = chat_room_id;
         this.user_name = user_name;
         this.message = message;
-        this.timeStamp = timeStamp;
     }
 
     public int getMessage_id() {
@@ -54,14 +56,6 @@ public class Messages {
         this.message = message;
     }
 
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
     @Override
     public String toString() {
         return "Messages{" +
@@ -69,7 +63,6 @@ public class Messages {
                 ", chat_room_id=" + chat_room_id +
                 ", user_name='" + user_name + '\'' +
                 ", message='" + message + '\'' +
-                ", timeStamp='" + timeStamp + '\'' +
                 '}';
     }
 }
