@@ -1,5 +1,7 @@
 package com.example.gamerchatapp.adapter;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.gamerchatapp.R;
+import com.example.gamerchatapp.activities.MainActivity;
 import com.example.gamerchatapp.dm.ChatRoom;
 import com.example.gamerchatapp.dm.Game;
 import com.example.gamerchatapp.dm.Response;
@@ -22,11 +25,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     private final ArrayList<Game> gameList;
     private final ArrayList<User> friendsList;
     private final ArrayList<ChatRoom> chatList;
+    private final Response response;
+    private Context context;
 
-    public CustomAdapter(ArrayList<Game> gameList, ArrayList<User> friendsList, ArrayList<ChatRoom> chatList) {
+
+    public CustomAdapter(ArrayList<Game> gameList, ArrayList<User> friendsList,
+                         ArrayList<ChatRoom> chatList, Response response, Context context) {
         this.gameList = gameList;
         this.friendsList = friendsList;
         this.chatList = chatList;
+        this.response = response;
+        this.context = context;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -54,7 +63,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, int position) {
         TextView itemName = holder.name_textView_item;
         ImageView imageView_item = holder.imageView_item;
-        CardView gameCardView = holder.itemCardView;
+        CardView itemCardView = holder.itemCardView;
 
         if(gameList != null) {
             itemName.setText(gameList.get(position).getName());
@@ -64,11 +73,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                             gameList.get(position).getName(),
                             "drawable", null);
             imageView_item.setImageResource(gameList.get(position).getImage());
-            Log.d("draw", String.valueOf(R.drawable.warcraft));
-            Log.d("draw2", String.valueOf(R.drawable.gtav));
-            Log.d("draw3", String.valueOf(R.drawable.fifa22));
-            Log.d("draw4", String.valueOf(R.drawable.nba_2k));
-            Log.d("draw5", String.valueOf(R.drawable.heroes3));
+//            Log.d("draw", String.valueOf(R.drawable.warcraft));
+//            Log.d("draw2", String.valueOf(R.drawable.gtav));
+//            Log.d("draw3", String.valueOf(R.drawable.fifa22));
+//            Log.d("draw4", String.valueOf(R.drawable.nba_2k));
+//            Log.d("draw5", String.valueOf(R.drawable.heroes3));
         }
         if(friendsList != null) {
             itemName.setText(friendsList.get(position).getName());
@@ -78,6 +87,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             itemName.setText(chatList.get(position).getName());
             imageView_item.setImageResource(chatList.get(position).getImage());
         }
+        itemCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                response.getHeader().setAction("chat_room_page");
+                response.getBody().getChatRoom().setName(holder.name_textView_item.getText().toString());
+                ((MainActivity) context).loadSetFragment(response);
+
+            }
+
+        });
     }
 
     @Override

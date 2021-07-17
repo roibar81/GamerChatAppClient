@@ -96,11 +96,11 @@ public class MainFragment extends Fragment {
         chatsRecyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 1, GridLayoutManager.HORIZONTAL, false));
         chatsRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new CustomAdapter(response.getBody().getGameList(), null, null);
+        adapter = new CustomAdapter(response.getBody().getGameList(), null, null, response, getContext());
         gamesRecyclerView.setAdapter(adapter);
-        adapter2 = new CustomAdapter(null, response.getBody().getUserList(), null);
+        adapter2 = new CustomAdapter(null, response.getBody().getUserList(), null, response, getContext());
         friendsRecyclerView.setAdapter(adapter2);
-        adapter3 = new CustomAdapter(null, null, response.getBody().getChatList());
+        adapter3 = new CustomAdapter(null, null, response.getBody().getChatList(), response, getContext());
         chatsRecyclerView.setAdapter(adapter3);
         return view;
     }
