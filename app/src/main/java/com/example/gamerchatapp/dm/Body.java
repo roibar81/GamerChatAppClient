@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Body implements Parcelable {
     private User user;
     private Game game;
+    private ChatRoom chatRoom;
     private ArrayList<User> userList;
     private ArrayList<Game> gameList;
     private ArrayList<ChatRoom> chatList;
@@ -42,9 +43,20 @@ public class Body implements Parcelable {
         this.pattern = pattern;
     }
 
+    public Body(User user, Game game, ChatRoom chatRoom, ArrayList<User> userList, ArrayList<Game> gameList, ArrayList<ChatRoom> chatList, String pattern) {
+        this.user = user;
+        this.game = game;
+        this.chatRoom = chatRoom;
+        this.userList = userList;
+        this.gameList = gameList;
+        this.chatList = chatList;
+        this.pattern = pattern;
+    }
+
     protected Body(Parcel in) {
         this.user = in.readParcelable(User.class.getClassLoader());
         this.game = in.readParcelable(Game.class.getClassLoader());
+        this.chatList = in.readParcelable(ChatRoom.class.getClassLoader());
         this.userList = in.readArrayList(ArrayList.class.getClassLoader());
         this.gameList = in.readArrayList(ArrayList.class.getClassLoader());
         this.chatList = in.readArrayList(ArrayList.class.getClassLoader());
@@ -60,6 +72,7 @@ public class Body implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable((Parcelable) this.user, flags);
         dest.writeParcelable((Parcelable) this.game, flags);
+        dest.writeParcelable((Parcelable) this.chatRoom, flags);
         dest.writeList(this.userList);
         dest.writeList(this.gameList);
         dest.writeList(this.chatList);
@@ -92,6 +105,14 @@ public class Body implements Parcelable {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public ChatRoom getChatRoom() {
+        return chatRoom;
+    }
+
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
     }
 
     public ArrayList<User> getUserList() {

@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.SyncStatusObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 import com.example.gamerchatapp.adapter.CustomAdapter;
 import com.example.gamerchatapp.dm.Body;
 import com.example.gamerchatapp.dm.Header;
+import com.example.gamerchatapp.fragments.ChatFragment;
 import com.example.gamerchatapp.fragments.MainFragment;
 import com.example.gamerchatapp.fragments.MenuFragment;
 import com.example.gamerchatapp.fragments.ProfileFragment;
@@ -121,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground().execute(request);
     }
 
+    public void sendMessage(View view, Response response) {
+
+    }
+
     public void loadSetFragment(Response response) {
         fragmentTransaction = fragmentManager.beginTransaction();
         FrameLayout frameLayouts = null;
@@ -130,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
         MenuFragment menuFragment = null;
         ProfileFragment profileFragment = null;
         LoginFragment loginFragment = null;
+        ChatFragment chatFragment = null;
+
 
         switch(response.getHeader().getAction()) {
             case "sign_in success":
@@ -157,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
                 profileFragment = new ProfileFragment();
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_profile);
                 frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                profileFragment.setArguments(bundle);
                 fragmentTransaction.add(R.id.fragment_profile,  profileFragment);
                 break;
             case "menu_page":
@@ -167,8 +178,6 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putParcelable("res", response);
                 menuFragment.setArguments(bundle);
                 fragmentTransaction.add(R.id.menu_fragment, menuFragment);
-                break;
-            default:
                 break;
             case "logOut":
                 loginFragment = new LoginFragment();
@@ -184,6 +193,19 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putParcelable("res", response);
                 mainFragment.setArguments(bundle);
                 fragmentTransaction.add(R.id.main_fragment, mainFragment);
+                break;
+            case "chat_room_page":
+                chatFragment = new ChatFragment();
+                frameLayouts = (FrameLayout) findViewById(R.id.fragment_chat);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.main_fragment);
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                chatFragment.setArguments(bundle);
+                fragmentTransaction.add(R.id.fragment_chat, chatFragment);
+                break;
+            default:
+                System.out.println("Failed");
+                break;
         }
         frameLayouts.setVisibility(View.VISIBLE);
         frameLayouts2.setVisibility(View.GONE);
