@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         Request request = new Request(new Header("write_message"), new Body());
         request.getBody().setMessage(response.getBody().getMessage());
         request.getBody().setChatRoom(response.getBody().getChatRoom());
+        request.getBody().setUser(response.getBody().getUser());
         new DoingBackground().execute(request);
     }
 
@@ -210,8 +211,6 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.fragment_chat, chatFragment);
                 break;
             case "write_message_success":
-                EditText message_textView = findViewById(R.id.message_editText_cr);
-                message_textView.setText("");
                 chatFragment = new ChatFragment();
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);

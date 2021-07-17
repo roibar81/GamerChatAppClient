@@ -31,7 +31,6 @@ public class ChatFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private Response response;
-    private String message;
     private Messages messageObject;
 
     public ChatFragment() {
@@ -78,12 +77,13 @@ public class ChatFragment extends Fragment {
         b_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                message = message_textView.getText().toString();
+                String message = message_textView.getText().toString();
                 messageObject = new Messages(response.getBody().getChatRoom().getChatRoom_id(), response.getBody().getUser().getName(), message);
                 //response.getBody().getMessage().setChat_room_id(response.getBody().getChatRoom().getChatRoom_id());
                 //response.getBody().getMessage().setMessage(message);
                 //response.getBody().getMessage().setUser_name(response.getBody().getUser().getName());
                 response.getBody().setMessage(messageObject);
+                message_textView.setText("");
                 ((MainActivity) getActivity()).sendMessage(response);
             }
         });
