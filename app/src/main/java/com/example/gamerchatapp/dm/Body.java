@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Body implements Parcelable {
     private User user;
+    private User friend;
     private Game game;
     private ChatRoom chatRoom;
     private Messages message;
@@ -17,73 +18,66 @@ public class Body implements Parcelable {
     private String pattern;
 
     public Body() {
+        this.user = new User();
+        this.friend = new User();
+        this.game = new Game();
+        this.chatRoom = new ChatRoom();
+        this.message = new Messages();
         this.userList = new ArrayList<>();
         this.gameList = new ArrayList<>();
         this.chatList = new ArrayList<>();
+        this.messageList = new ArrayList<>();
         this.pattern = "";
     }
 
-    public Body(ArrayList<User> userList, ArrayList<Game> gameList, ArrayList<ChatRoom> chatList) {
-        this.userList = userList;
-        this.gameList = gameList;
-        this.chatList = chatList;
-        this.pattern = "";
-    }
-
-    public Body(ArrayList<User> userList, ArrayList<Game> gameList, ArrayList<ChatRoom> chatList, String pattern) {
-        this.userList = userList;
-        this.gameList = gameList;
-        this.chatList = chatList;
-        this.pattern = pattern;
-    }
-
-    public Body(User user, ArrayList<User> userList, ArrayList<Game> gameList, ArrayList<ChatRoom> chatList,
-                String pattern) {
+    public Body(User user, String pattern) {
         this.user = user;
-        this.userList = userList;
-        this.gameList = gameList;
-        this.chatList = chatList;
+        this.userList = new ArrayList<>();
+        this.gameList = new ArrayList<>();
+        this.chatList = new ArrayList<>();
+        this.messageList = new ArrayList<>();
         this.pattern = pattern;
     }
 
-    public Body(User user, Game game, ChatRoom chatRoom, ArrayList<User> userList,
-                ArrayList<Game> gameList, ArrayList<ChatRoom> chatList, String pattern) {
+    public Body(User user, Game game, ChatRoom chatRoom, String pattern) {
         this.user = user;
         this.game = game;
         this.chatRoom = chatRoom;
-        this.userList = userList;
-        this.gameList = gameList;
-        this.chatList = chatList;
+        this.userList = new ArrayList<>();
+        this.gameList = new ArrayList<>();
+        this.chatList = new ArrayList<>();
+        this.messageList = new ArrayList<>();
         this.pattern = pattern;
     }
 
-    public Body(User user, Game game, ChatRoom chatRoom, Messages message, ArrayList<User> userList,
-                ArrayList<Game> gameList, ArrayList<ChatRoom> chatList, String pattern) {
+    public Body(User user, Game game, ChatRoom chatRoom, Messages message, String pattern) {
         this.user = user;
         this.game = game;
         this.chatRoom = chatRoom;
         this.message = message;
-        this.userList = userList;
-        this.gameList = gameList;
-        this.chatList = chatList;
+        this.userList = new ArrayList<>();
+        this.gameList = new ArrayList<>();
+        this.chatList = new ArrayList<>();
+        this.messageList = new ArrayList<>();
         this.pattern = pattern;
     }
 
-    public Body(User user, Game game, ChatRoom chatRoom, Messages message, ArrayList<User> userList,
-                ArrayList<Game> gameList, ArrayList<ChatRoom> chatList, ArrayList<Messages> messageList, String pattern) {
+    public Body(User user, User friend, Game game, ChatRoom chatRoom, Messages message, String pattern) {
         this.user = user;
+        this.friend = friend;
         this.game = game;
         this.chatRoom = chatRoom;
         this.message = message;
-        this.userList = userList;
-        this.gameList = gameList;
-        this.chatList = chatList;
-        this.messageList = messageList;
+        this.userList = new ArrayList<>();
+        this.gameList = new ArrayList<>();
+        this.chatList = new ArrayList<>();
+        this.messageList = new ArrayList<>();
         this.pattern = pattern;
     }
 
     protected Body(Parcel in) {
         this.user = in.readParcelable(User.class.getClassLoader());
+        this.friend = in.readParcelable(User.class.getClassLoader());
         this.game = in.readParcelable(Game.class.getClassLoader());
         this.chatList = in.readParcelable(ChatRoom.class.getClassLoader());
         this.message = in.readParcelable(Messages.class.getClassLoader());
@@ -102,6 +96,7 @@ public class Body implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable((Parcelable) this.user, flags);
+        dest.writeParcelable((Parcelable) this.friend, flags);
         dest.writeParcelable((Parcelable) this.game, flags);
         dest.writeParcelable((Parcelable) this.chatRoom, flags);
         dest.writeParcelable((Parcelable) this.message, flags);
@@ -130,6 +125,14 @@ public class Body implements Parcelable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public User getFriend() {
+        return friend;
+    }
+
+    public void setFriend(User friend) {
+        this.friend = friend;
     }
 
     public Game getGame() {
@@ -200,6 +203,7 @@ public class Body implements Parcelable {
     public String toString() {
         return "Body{" +
                 "user=" + user +
+                ", friend=" + friend +
                 ", game=" + game +
                 ", chatRoom=" + chatRoom +
                 ", message=" + message +

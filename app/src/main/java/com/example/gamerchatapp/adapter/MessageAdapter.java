@@ -48,7 +48,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyMessag
         TextView name_textView = holder.name_textView;
         TextView message_textView = holder.message_textView;
 
-        name_textView.setText(messageList.get(position).getUser_name()+":");
+        name_textView.setText(messageList.get(position).getUser_name() + ": ");
         message_textView.setText(messageList.get(position).getMessage());
     }
 

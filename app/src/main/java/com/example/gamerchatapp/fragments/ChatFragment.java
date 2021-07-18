@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.gamerchatapp.R;
@@ -78,7 +79,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String message = message_textView.getText().toString();
-                messageObject = new Messages(response.getBody().getChatRoom().getChatRoom_id(), response.getBody().getUser().getName(), message);
+                messageObject = new Messages(response.getBody().getChatRoom().getChatRoom_id(),
+                        response.getBody().getUser().getName(), message);
                 //response.getBody().getMessage().setChat_room_id(response.getBody().getChatRoom().getChatRoom_id());
                 //response.getBody().getMessage().setMessage(message);
                 //response.getBody().getMessage().setUser_name(response.getBody().getUser().getName());
@@ -96,5 +98,14 @@ public class ChatFragment extends Fragment {
         messageAdapter = new MessageAdapter(response.getBody().getMessageList());
         recyclerView.setAdapter(messageAdapter);
         return view;
+    }
+
+
+    public boolean onBackPressed2() {
+        FrameLayout frameLayouts = (FrameLayout) this.getActivity().findViewById(R.id.main_fragment);
+        FrameLayout frameLayouts2 = (FrameLayout) this.getActivity().findViewById(R.id.fragment_chat);
+        frameLayouts.setVisibility(View.VISIBLE);
+        frameLayouts2.setVisibility(View.GONE);
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package com.example.gamerchatapp.dm;
 import java.util.ArrayList;
 
 public class User {
+    private int id;
     private String name;
     private String email;
     private String salt;
@@ -12,6 +13,10 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 
     public User(String name, String password) {
@@ -32,6 +37,24 @@ public class User {
         this.salt = salt;
         this.friends = new ArrayList<User>();
         this.favGames = new ArrayList<Game>();
+    }
+
+    public User(int id, String name, String email, String salt, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.salt = salt;
+        this.password = password;
+        this.friends = new ArrayList<User>();
+        this.favGames = new ArrayList<Game>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -85,7 +108,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", salt='" + salt + '\'' +
                 ", password='" + password + '\'' +
