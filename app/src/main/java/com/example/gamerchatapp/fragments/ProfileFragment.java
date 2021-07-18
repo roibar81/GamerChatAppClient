@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -74,5 +75,13 @@ public class ProfileFragment extends Fragment {
         nf_textView.setText(String.valueOf(response.getBody().getUser().getFriends().size()));
         ng_textView.setText(String.valueOf(response.getBody().getUser().getFavGames().size()));
         return view;
+    }
+
+    public boolean onBackPressed3() {
+        FrameLayout frameLayouts = (FrameLayout) this.getActivity().findViewById(R.id.menu_fragment);
+        FrameLayout frameLayouts2 = (FrameLayout) this.getActivity().findViewById(R.id.fragment_profile);
+        frameLayouts.setVisibility(View.VISIBLE);
+        frameLayouts2.setVisibility(View.GONE);
+        return false;
     }
 }

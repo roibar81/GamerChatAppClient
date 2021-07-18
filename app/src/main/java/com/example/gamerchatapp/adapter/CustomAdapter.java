@@ -82,6 +82,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         if(friendsList != null) {
             itemName.setText(friendsList.get(position).getName());
             imageView_item.setImageResource(R.drawable.usericon);
+            itemCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    response.getHeader().setAction("send_friend_request");
+                    User user = new User(holder.name_textView_item.getText().toString());
+                    response.getBody().setFriend(user);
+                    ((MainActivity) context).sendFriendRequest(response);
+                }
+            });
         }
         if(chatList != null) {
             itemName.setText(chatList.get(position).getName());
