@@ -1,6 +1,7 @@
 package com.example.gamerchatapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.os.AsyncTask;
@@ -29,6 +30,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,17 +60,19 @@ public class MainActivity extends AppCompatActivity {
         doingBackground = new DoingBackground();
     }
 
+
     private class DoingBackground extends AsyncTask<Request, Void, Response> {
         private Response response;
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.100.102.8", 12345);
+                Socket socket = new Socket("10.0.0.16", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
                 reqStr = writeRequest(requests[0]);
-                Log.d("to server", reqStr);
+                Log.d("to server", requests[0].getBody().getUserList().toString());
+                Log.d("to server", requests[0].getBody().getUser().toString());
                 writer.writeObject(reqStr);
 
 
@@ -85,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Response response) {
             super.onPostExecute(response);
-            //Log.d("response", response.toString());
+            Log.d("response", response.getBody().getUser().toString());
+            Log.d("response", response.getBody().getUserList().toString());
             loadSetFragment(response);
         }
 
@@ -95,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         passText = (EditText) findViewById(R.id.passwordText);
         String userName = nameText.getText().toString();
         String password = passText.getText().toString();
+        nameText.setText("");
+        passText.setText("");
         User user = new User(userName, password);
         Header header = new Header("sign_in");
         Body body = new Body();
@@ -110,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
         String userName = nameText.getText().toString();
         String password = passText.getText().toString();
         String email = emailText.getText().toString();
+        nameText.setText("");
+        passText.setText("");
+        emailText.setText("");
         User user = new User(userName, password, email);
         Header header = new Header("sign_up");
         Body body = new Body();
@@ -134,6 +144,13 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground().execute(request);
     }
 
+    public void sendFriendRequest(Response response) {
+        Request request = new Request(response.getHeader(), new Body());
+        request.getBody().setUser(response.getBody().getUser());
+        request.getBody().setFriend(response.getBody().getFriend());
+        new DoingBackground().execute(request);
+    }
+
     public void loadSetFragment(Response response) {
         fragmentTransaction = fragmentManager.beginTransaction();
         FrameLayout frameLayouts = null;
@@ -144,28 +161,39 @@ public class MainActivity extends AppCompatActivity {
         ProfileFragment profileFragment = null;
         LoginFragment loginFragment = null;
         ChatFragment chatFragment = null;
+        Fragment fragment = null;
 
 
         switch(response.getHeader().getAction()) {
             case "sign_in success":
                 frameLayouts = (FrameLayout) findViewById(R.id.main_fragment);;
-                mainFragment = new MainFragment();;
+                fragment = new MainFragment();;
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);
-                mainFragment.setArguments(bundle);
-                fragmentTransaction.add(R.id.main_fragment, mainFragment);
+                fragment.setArguments(bundle);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
+                fragmentTransaction.add(R.id.main_fragment, fragment);
+                break;
+            case "sign_in_failed":
+                frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.main_fragment);
                 break;
             case "sign_up success":
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
                 loginFragment = new LoginFragment();
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_register);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_login, loginFragment);
                 break;
             case "register_page":
                 registerFragment = new RegisterFragment();
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_register);
                 frameLayouts2 = (FrameLayout) findViewById(R.id.fragment_login);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_register, registerFragment);
                 break;
             case "profile_page":
@@ -175,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);
                 profileFragment.setArguments(bundle);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_profile,  profileFragment);
                 break;
             case "menu_page":
@@ -184,12 +214,16 @@ public class MainActivity extends AppCompatActivity {
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);
                 menuFragment.setArguments(bundle);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.menu_fragment, menuFragment);
                 break;
             case "logOut":
                 loginFragment = new LoginFragment();
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_login);
                 frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_login, loginFragment);
                 break;
             case "home":
@@ -199,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);
                 mainFragment.setArguments(bundle);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.main_fragment, mainFragment);
                 break;
             case "chat_room_page":
@@ -208,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
                 bundle = new Bundle();
                 bundle.putParcelable("res", response);
                 chatFragment.setArguments(bundle);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.fragment_chat, chatFragment);
                 break;
             case "write_message_success":
@@ -220,10 +258,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 System.out.println("Failed");
                 break;
-        }
-        if(!response.getHeader().getAction().equals("write_message_success")) {
-            frameLayouts.setVisibility(View.VISIBLE);
-            frameLayouts2.setVisibility(View.GONE);
         }
         fragmentTransaction.addToBackStack(null).commit();
     }
@@ -247,4 +281,34 @@ public class MainActivity extends AppCompatActivity {
         return response;
     }
 
+    @Override
+    public void onBackPressed() {
+
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+
+        boolean handled = false;
+        for(Fragment f : fragmentList) {
+            if (f instanceof ChatFragment) {
+                handled = ((ChatFragment) f).onBackPressed2();
+                if (handled) {
+                    break;
+                }
+            }
+            if (f instanceof ProfileFragment) {
+                handled = ((ProfileFragment) f).onBackPressed3();
+                if (handled) {
+                    break;
+                }
+            }
+            if (f instanceof MenuFragment) {
+                handled = ((MenuFragment) f).onBackPressed4();
+                if (handled) {
+                    break;
+                }
+            }
+        }
+        if(!handled) {
+            super.onBackPressed();
+        }
+    }
 }

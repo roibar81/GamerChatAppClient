@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.activities.MainActivity;
 import com.example.gamerchatapp.adapter.CustomAdapter;
 import com.example.gamerchatapp.dm.Game;
 import com.example.gamerchatapp.dm.Response;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,5 +107,6 @@ public class MainFragment extends Fragment {
         chatsRecyclerView.setAdapter(adapter3);
         return view;
     }
+
 
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.example.gamerchatapp.R;
 import com.example.gamerchatapp.activities.MainActivity;
@@ -84,5 +85,13 @@ public class MenuFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public boolean onBackPressed4() {
+        FrameLayout frameLayouts = (FrameLayout) this.getActivity().findViewById(R.id.main_fragment);
+        FrameLayout frameLayouts2 = (FrameLayout) this.getActivity().findViewById(R.id.menu_fragment);
+        frameLayouts.setVisibility(View.VISIBLE);
+        frameLayouts2.setVisibility(View.GONE);
+        return false;
     }
 }
