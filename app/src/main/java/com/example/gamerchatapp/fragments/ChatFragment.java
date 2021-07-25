@@ -84,9 +84,11 @@ public class ChatFragment extends Fragment {
                 //response.getBody().getMessage().setChat_room_id(response.getBody().getChatRoom().getChatRoom_id());
                 //response.getBody().getMessage().setMessage(message);
                 //response.getBody().getMessage().setUser_name(response.getBody().getUser().getName());
-                response.getBody().setMessage(messageObject);
-                message_textView.setText("");
-                ((MainActivity) getActivity()).sendMessage(response);
+                if(!message_textView.getText().toString().equals("")) {
+                    response.getBody().setMessage(messageObject);
+                    message_textView.setText("");
+                    ((MainActivity) getActivity()).sendMessage(response);
+                }
             }
         });
 

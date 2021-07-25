@@ -30,26 +30,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
-                android:text="TextView" />
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="#3F51B5"
+                android:textSize="30sp" />
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/email_textView_profile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center|left"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="email"
-            android:textSize="20sp" />
+            android:textColor="#3F51B5"
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/num_of_freinds_profile"
+            android:id="@+id/FriendList_textView_p"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="friend List"
+            android:textColor="#3F51B5"
+            android:textSize="24sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="number of freinds"
-            android:textSize="24sp" />
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/num_of_games_profile"
