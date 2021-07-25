@@ -67,12 +67,12 @@ public class ProfileFragment extends Fragment {
         imageView.setImageResource(R.drawable.usericon);
         TextView name_textView = (TextView) view.findViewById(R.id.name_textView_profile);
         TextView email_textView = (TextView) view.findViewById(R.id.email_textView_profile);
-        TextView nf_textView = (TextView) view.findViewById(R.id.num_of_freinds_profile);
+        //TextView nf_textView = (TextView) view.findViewById(R.id.num_of_freinds_profile);
         TextView ng_textView = (TextView) view.findViewById(R.id.num_of_games_profile);
 
         name_textView.setText(response.getBody().getUser().getName());
         email_textView.setText(response.getBody().getUser().getEmail());
-        nf_textView.setText(String.valueOf(response.getBody().getUser().getFriends().size()));
+        //nf_textView.setText(String.valueOf(response.getBody().getUser().getFriends().size()));
         ng_textView.setText(String.valueOf(response.getBody().getUser().getFavGames().size()));
         return view;
     }
