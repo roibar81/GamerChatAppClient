@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.0.0.16", 12345);
+                Socket socket = new Socket("10.100.102.7", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
