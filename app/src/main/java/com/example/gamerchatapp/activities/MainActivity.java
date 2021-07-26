@@ -14,6 +14,7 @@ import com.example.gamerchatapp.adapter.CustomAdapter;
 import com.example.gamerchatapp.dm.Body;
 import com.example.gamerchatapp.dm.Header;
 import com.example.gamerchatapp.fragments.ChatFragment;
+import com.example.gamerchatapp.fragments.FriendRequestsFragment;
 import com.example.gamerchatapp.fragments.MainFragment;
 import com.example.gamerchatapp.fragments.MenuFragment;
 import com.example.gamerchatapp.fragments.ProfileFragment;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Response doInBackground(Request... requests) {
             try {
-                Socket socket = new Socket("10.100.102.7", 12345);
+                Socket socket = new Socket("10.0.0.16", 12345);
                 ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
@@ -151,6 +152,28 @@ public class MainActivity extends AppCompatActivity {
         new DoingBackground().execute(request);
     }
 
+    public void searchUserList(Response response) {
+        Request request = new Request(response.getHeader(), response.getBody());
+        request.getBody().setUser(response.getBody().getUser());
+        request.getBody().setPattern(response.getBody().getPattern());
+        request.getBody().setUserList(response.getBody().getUserList());
+        new DoingBackground().execute(request);
+    }
+
+    public void loadFriendReqPage(Response response) {
+        Request request = new Request(response.getHeader(), response.getBody());
+        request.getBody().setUser(response.getBody().getUser());
+        request.getBody().setUserList(response.getBody().getUserList());
+        new DoingBackground().execute(request);
+    }
+
+    public void loadProfilePage(Response response) {
+        Request request = new Request(response.getHeader(), response.getBody());
+        request.getBody().setUser(response.getBody().getUser());
+        request.getBody().setUserList(response.getBody().getUserList());
+        new DoingBackground().execute(request);
+    }
+
     public void loadSetFragment(Response response) {
         fragmentTransaction = fragmentManager.beginTransaction();
         FrameLayout frameLayouts = null;
@@ -162,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         LoginFragment loginFragment = null;
         ChatFragment chatFragment = null;
         Fragment fragment = null;
+        FriendRequestsFragment friendRequestsFragment = null;
 
 
         switch(response.getHeader().getAction()) {
@@ -205,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 profileFragment.setArguments(bundle);
                 frameLayouts.setVisibility(View.VISIBLE);
                 frameLayouts2.setVisibility(View.GONE);
-                fragmentTransaction.add(R.id.fragment_profile,  profileFragment);
+                fragmentTransaction.add(R.id.fragment_profile, profileFragment);
                 break;
             case "menu_page":
                 menuFragment = new MenuFragment();
@@ -237,6 +261,17 @@ public class MainActivity extends AppCompatActivity {
                 frameLayouts2.setVisibility(View.GONE);
                 fragmentTransaction.add(R.id.main_fragment, mainFragment);
                 break;
+            case "friend-list-page":
+                friendRequestsFragment = new FriendRequestsFragment();
+                frameLayouts = (FrameLayout) findViewById(R.id.fragment_fr);
+                frameLayouts2 = (FrameLayout) findViewById(R.id.menu_fragment);
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                friendRequestsFragment.setArguments(bundle);
+                frameLayouts.setVisibility(View.VISIBLE);
+                frameLayouts2.setVisibility(View.GONE);
+                fragmentTransaction.add(R.id.fragment_fr, friendRequestsFragment);
+                break;
             case "chat_room_page":
                 chatFragment = new ChatFragment();
                 frameLayouts = (FrameLayout) findViewById(R.id.fragment_chat);
@@ -254,6 +289,13 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putParcelable("res", response);
                 chatFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_chat, chatFragment);
+                break;
+            case "search-user-by-name-success":
+                friendRequestsFragment = new FriendRequestsFragment();
+                bundle = new Bundle();
+                bundle.putParcelable("res", response);
+                friendRequestsFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.fragment_fr, friendRequestsFragment);
                 break;
             default:
                 System.out.println("Failed");
@@ -302,6 +344,12 @@ public class MainActivity extends AppCompatActivity {
             }
             if (f instanceof MenuFragment) {
                 handled = ((MenuFragment) f).onBackPressed4();
+                if (handled) {
+                    break;
+                }
+            }
+            if (f instanceof FriendRequestsFragment) {
+                handled = ((FriendRequestsFragment) f).onBackPressed5();
                 if (handled) {
                     break;
                 }

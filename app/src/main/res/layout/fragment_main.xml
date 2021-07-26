@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Gamer Chat App"
-            android:textColor="#0A0A0A"
+            android:textColor="#3F51B5"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -32,7 +32,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
                 android:text="welcome user"
-                android:textColor="#070707" />
+                android:textColor="#3F51B5"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/menu_button"
@@ -56,7 +57,9 @@
                     android:id="@+id/sug_games_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Suggested games" />
+                    android:text="Suggested games"
+                    android:textColor="#3F51B5"
+                    android:textSize="18sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/sug_games_view"
@@ -72,7 +75,9 @@
                     android:id="@+id/sug_friends_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Suggested friends" />
+                    android:text="Suggested friends"
+                    android:textColor="#3F51B5"
+                    android:textSize="18sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/sug_friends_rview"
@@ -87,7 +92,9 @@
                     android:id="@+id/chats_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Favurite games chats" />
+                    android:text="Favurite games chats"
+                    android:textColor="#3F51B5"
+                    android:textSize="18sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/chats_rview"

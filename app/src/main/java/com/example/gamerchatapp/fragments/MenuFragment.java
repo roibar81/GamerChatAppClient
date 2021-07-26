@@ -65,7 +65,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 response.getHeader().setAction("profile_page");
-                ((MainActivity) getActivity()).loadSetFragment(response);
+                ((MainActivity) getActivity()).loadProfilePage(response);
             }
         });
         Button b_logOut = (Button) view.findViewById(R.id.logOut_button_menu);
@@ -82,6 +82,14 @@ public class MenuFragment extends Fragment {
             public void onClick(View v) {
                 response.getHeader().setAction("home");
                 ((MainActivity) getActivity()).loadSetFragment(response);
+            }
+        });
+        Button b_friendList = (Button) view.findViewById(R.id.frienfList_button_menu);
+        b_friendList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                response.getHeader().setAction("friend-list-page");
+                ((MainActivity) getActivity()).loadFriendReqPage(response);
             }
         });
         return view;
