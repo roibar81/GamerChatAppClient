@@ -24,7 +24,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="GamerChatApp"
-                android:textColor="#060606"
+                android:textColor="#3F51B5"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Sign up"
-                android:textColor="#090808"
+                android:textColor="#3F51B5"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="user name"
-                android:textColor="#0D0C0C"
+                android:textColor="#3F51B5"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -80,7 +80,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Password"
-                android:textColor="#0D0C0C"
+                android:textColor="#3F51B5"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -107,7 +107,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Email"
-                android:textColor="#0D0C0C"
+                android:textColor="#3F51B5"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 

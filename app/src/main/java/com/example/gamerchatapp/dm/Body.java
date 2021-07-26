@@ -12,6 +12,7 @@ public class Body implements Parcelable {
     private ChatRoom chatRoom;
     private Messages message;
     private ArrayList<User> userList;
+    private ArrayList<User> usersRs;
     private ArrayList<Game> gameList;
     private ArrayList<ChatRoom> chatList;
     private ArrayList<Messages> messageList;
@@ -27,6 +28,7 @@ public class Body implements Parcelable {
         this.gameList = new ArrayList<>();
         this.chatList = new ArrayList<>();
         this.messageList = new ArrayList<>();
+        this.usersRs = new ArrayList<>();
         this.pattern = "";
     }
 
@@ -36,6 +38,7 @@ public class Body implements Parcelable {
         this.gameList = new ArrayList<>();
         this.chatList = new ArrayList<>();
         this.messageList = new ArrayList<>();
+        this.usersRs = new ArrayList<>();
         this.pattern = pattern;
     }
 
@@ -47,6 +50,7 @@ public class Body implements Parcelable {
         this.gameList = new ArrayList<>();
         this.chatList = new ArrayList<>();
         this.messageList = new ArrayList<>();
+        this.usersRs = new ArrayList<>();
         this.pattern = pattern;
     }
 
@@ -59,6 +63,7 @@ public class Body implements Parcelable {
         this.gameList = new ArrayList<>();
         this.chatList = new ArrayList<>();
         this.messageList = new ArrayList<>();
+        this.usersRs = new ArrayList<>();
         this.pattern = pattern;
     }
 
@@ -72,6 +77,7 @@ public class Body implements Parcelable {
         this.gameList = new ArrayList<>();
         this.chatList = new ArrayList<>();
         this.messageList = new ArrayList<>();
+        this.usersRs = new ArrayList<>();
         this.pattern = pattern;
     }
 
@@ -85,6 +91,7 @@ public class Body implements Parcelable {
         this.gameList = in.readArrayList(ArrayList.class.getClassLoader());
         this.chatList = in.readArrayList(ArrayList.class.getClassLoader());
         this.messageList = in.readArrayList(ArrayList.class.getClassLoader());
+        this.usersRs = in.readArrayList(ArrayList.class.getClassLoader());
         this.pattern = in.readString();
     }
 
@@ -104,6 +111,7 @@ public class Body implements Parcelable {
         dest.writeList(this.gameList);
         dest.writeList(this.chatList);
         dest.writeList(this.messageList);
+        dest.writeList(this.usersRs);
         dest.writeString(this.pattern);
     }
 
@@ -167,6 +175,14 @@ public class Body implements Parcelable {
         this.userList = userList;
     }
 
+    public ArrayList<User> getUsersRs() {
+        return usersRs;
+    }
+
+    public void setUsersRs(ArrayList<User> usersRs) {
+        this.usersRs = usersRs;
+    }
+
     public ArrayList<Game> getGameList() {
         return gameList;
     }
@@ -208,6 +224,7 @@ public class Body implements Parcelable {
                 ", chatRoom=" + chatRoom +
                 ", message=" + message +
                 ", userList=" + userList +
+                ", usersRs=" + usersRs +
                 ", gameList=" + gameList +
                 ", chatList=" + chatList +
                 ", messageList=" + messageList +
