@@ -14,4 +14,4 @@ All this easily and quickly with a few short clicks. System Objectives:
 
 * Object Oriented Programing.
 * Host-Target Architectur.
-* Multithreded Socket Programing.
+* Multithreaded Socket Programing.
